@@ -1,0 +1,19 @@
+# Virtual env
+.venv
+venv
+
+# IDE config
+.vscode
+__pycache__
+.idea
+.DS_Store
+
+# Distribution packaging
+dist/
+build/
+
+# Node dependencies
+node_modules
+
+# Environment variables
+.env
