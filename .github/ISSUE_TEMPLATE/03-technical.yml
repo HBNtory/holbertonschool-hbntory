@@ -1,8 +1,7 @@
 name: 🔧 Technical
 description: Technical work with no direct user-facing value
-title: " "
 labels: ["technical"]
-type: "Technical"
+# type: "Technical"
 body:
   - type: markdown
     attributes:

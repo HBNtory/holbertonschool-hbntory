@@ -1,8 +1,7 @@
 name: 🐛 Bug
 description: Reports a behavior that diverges from what is expected
-title: " "
 labels: ["bug"]
-type: "Bug"
+# type: "Bug"
 body:
   - type: markdown
     attributes:

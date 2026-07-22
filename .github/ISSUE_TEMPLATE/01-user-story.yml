@@ -1,8 +1,7 @@
 name: 🎯 User Story
 description: Describes a feature from a user's point of view
-title: " "
 labels: ["story"]
-type: "Story"
+# type: "Story"
 body:
   - type: markdown
     attributes:
