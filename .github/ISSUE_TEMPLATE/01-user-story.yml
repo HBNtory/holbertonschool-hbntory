@@ -1,0 +1,96 @@
+name: 🎯 User Story
+description: Describes a feature from a user's point of view
+title: " "
+labels: ["story"]
+type: "Story"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Expected title: outcome-oriented wording, no prefix.
+        Example: "View a branch's stock from the backoffice"
+
+  - type: dropdown
+    id: role
+    attributes:
+      label: As a
+      description: The role who benefits from this feature
+      options:
+        - Backoffice employee
+        - Administrator
+        - Anonymous visitor
+        - Developer / Ops
+    validations:
+      required: true
+
+  - type: input
+    id: need
+    attributes:
+      label: I want
+      description: An action, not a technical solution
+      placeholder: filter the stock list by product category
+    validations:
+      required: true
+
+  - type: input
+    id: benefit
+    attributes:
+      label: So that
+      description: The value gained. If this field is hard to fill in, the story should not exist.
+      placeholder: I can find an item quickly without scanning the whole list
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected component
+      multiple: true
+      options:
+        - Backoffice
+        - Database
+        - Product MCP Server
+        - AI Query Service
+        - Client Web Interface
+        - Infrastructure / Docker
+        - Documentation
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: One criterion per line, verifiable and observable. Given / When / Then format recommended.
+      value: |
+        - [ ] Given ... when ... then ...
+        - [ ] 
+        - [ ] 
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context and notes
+      description: Mockups, technical constraints, links to an ADR or a spec.
+    validations:
+      required: false
+
+  - type: input
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: Numbers of blocking issues, comma-separated
+      placeholder: "#12, #27"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: dod
+    attributes:
+      label: Definition of Done
+      options:
+        - label: Code reviewed and PR approved
+        - label: pycodestyle clean
+        - label: Documentation updated if needed

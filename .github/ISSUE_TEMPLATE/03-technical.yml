@@ -1,0 +1,62 @@
+name: 🔧 Technical
+description: Technical work with no direct user-facing value
+title: " "
+labels: ["technical"]
+type: "Technical"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Expected title: the technical outcome in one line.
+        Example: "Set up Docker Compose for the full service stack"
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected component
+      multiple: true
+      options:
+        - Backoffice
+        - Database
+        - Product MCP Server
+        - AI Query Service
+        - Client Web Interface
+        - Infrastructure / Docker
+        - Documentation
+    validations:
+      required: true
+
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: What needs to be done and why. If a user benefits directly, this should be a Story instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: One verifiable outcome per line.
+      value: |
+        - [ ] 
+        - [ ] 
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context and notes
+      description: Technical constraints, links to an ADR or spec, relevant docs.
+    validations:
+      required: false
+
+  - type: input
+    id: dependencies
+    attributes:
+      label: Dependencies
+      placeholder: "#12, #27"
+    validations:
+      required: false

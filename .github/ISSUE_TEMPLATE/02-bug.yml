@@ -1,0 +1,75 @@
+name: 🐛 Bug
+description: Reports a behavior that diverges from what is expected
+title: " "
+labels: ["bug"]
+type: "Bug"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Expected title: the observed problem in one line.
+        Example: "Stock quantity shows negative after concurrent updates"
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected component
+      multiple: true
+      options:
+        - Backoffice
+        - Database
+        - Product MCP Server
+        - AI Query Service
+        - Client Web Interface
+        - Infrastructure / Docker
+        - Documentation
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Numbered, minimal steps someone else can follow exactly.
+      value: |
+        1. 
+        2. 
+        3. 
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What happens instead. Include error messages or logs verbatim.
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Branch/commit, OS, Python version, Docker version, how it was launched.
+      value: |
+        - Commit: 
+        - OS: 
+        - Python: 
+        - Docker: 
+    validations:
+      required: false
+
+  - type: input
+    id: dependencies
+    attributes:
+      label: Related issues
+      placeholder: "#12, #27"
+    validations:
+      required: false
