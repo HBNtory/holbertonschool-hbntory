@@ -3,7 +3,7 @@
 
 ## database service (MySQL)
 
-Be sur to have your `.env` file at the root project with your credentials.
+Be sure to have your `.env` file at the root project with your credentials.
 
 ### 1. Start the database
 Launch the container in background with the following command:
@@ -22,7 +22,7 @@ docker-compose exec db mysql -u hbntory_app -p hbntory
 ```
 *(💡 Adding “hbntory” at the end of this command connects you directly to the correct database.)*
 
-### 3.Stop the database
+### 3. Stop the database:
 ```bash
 docker-compose down
 ```
