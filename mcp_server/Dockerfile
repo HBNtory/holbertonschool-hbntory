@@ -8,4 +8,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["python3", "server.py"]
+CMD [
+  "fastmcp",
+  "run",
+  "server.py:mcp",
+  "--transport", "http",
+  "--host", "0.0.0.0",
+  "--port", "8000"
+]
