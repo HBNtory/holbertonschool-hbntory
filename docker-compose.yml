@@ -17,5 +17,13 @@ services:
       - .env
     restart: unless-stopped
 
+
+  backoffice:
+    build:
+      context: ./backoffice
+    env_file:
+      - .env
+    restart: unless-stopped
+
 volumes:
   db_data:
