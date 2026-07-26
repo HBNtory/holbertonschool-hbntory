@@ -7,6 +7,7 @@ bp = Blueprint("user", __name__)
 @bp.route("/users")
 def user_test():
     """
-    Route to initiate a blueprint for user api route to connect at Flask app factory.
+    Route to initiate a blueprint for user api route to connect at
+     Flask app factory.
     """
     return {"User test": "ok"}
