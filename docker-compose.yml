@@ -21,6 +21,8 @@ services:
   backoffice:
     build:
       context: ./backoffice
+    ports:
+      - "8080:5000"
     env_file:
       - .env
     restart: unless-stopped
