@@ -10,5 +10,12 @@ services:
         - db_data:/var/lib/mysql
     restart: unless-stopped
 
+  mcp_server:
+    build:
+      context: ./mcp_server
+    env_file:
+      - .env
+    restart: unless-stopped
+
 volumes:
   db_data:
