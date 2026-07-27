@@ -1,10 +1,7 @@
-# serveur flask
+from app import create_app
 
-# import router
 
-# GET /health
-# GET /api/v1/users
-# GET /api/v1/products/search?q=keyboard
-# GET /api/v1/products/HB-LAP-1001
-# GET /api/v1/categories
-# GET /api/v1/suppliers
+app = create_app()
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
