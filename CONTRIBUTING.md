@@ -32,7 +32,7 @@ Blank issues are disabled — pick the template that fits.
 
 ## Pull requests
 - One pull request per ticket.
-- Target `dev`, not `main`.
+- Target `dev`, not `master`.
 - Link the ticket with `Closes #<issue-number>` so it closes automatically
   on merge.
 - Fill in the PR description: what, why, changes, how to test.
