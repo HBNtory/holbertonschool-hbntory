@@ -27,5 +27,11 @@ services:
       - .env
     restart: unless-stopped
 
+  ai_service:
+    build:
+      context: ./ai_service
+    env_file:
+      - .env
+
 volumes:
   db_data:
