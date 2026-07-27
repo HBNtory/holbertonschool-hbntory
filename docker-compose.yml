@@ -23,6 +23,10 @@ services:
   backoffice:
     build:
       context: ./backoffice
+    volumes:
+      - ./backoffice:/app
+    ports:
+      - "8080:5000"
     env_file:
       - .env
     restart: unless-stopped
