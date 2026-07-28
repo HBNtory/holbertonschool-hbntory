@@ -1,5 +1,6 @@
 from flask import Flask
 from app.config import Config
+from app.database import SessionLocal
 
 
 def create_app():
@@ -24,5 +25,10 @@ def create_app():
     app.register_blueprint(user_bp)
     app.register_blueprint(branch_bp)
     app.register_blueprint(stock_bp)
+
+    @app.teardown_appcontext
+    def remove_session(exception=None):
+        """Automatically closes database sessions when the query is complete"""
+        SessionLocal.remove()
 
     return app
