@@ -7,6 +7,7 @@ from app.config import Config
 class Base(DeclarativeBase):
     pass
 
+
 engine = create_engine(Config.SQLALCHEMY_DATABASE_URI)
 
 SessionLocal = scoped_session(sessionmaker(bind=engine))

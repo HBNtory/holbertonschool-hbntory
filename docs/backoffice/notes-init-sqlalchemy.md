@@ -41,3 +41,14 @@ Once running:
 curl -i http://localhost:8080/health
 ```
 Response:
+```bash
+HTTP/1.1 200 OK
+{"database": "ok", "status": "ok"}
+```
+The `-i` flag shows the HTTP status line and headers. A `503` means the database is
+unreachable.
+
+## Where to put the file
+`database.py` lives at the root of `app/` (next to `config.py`), because it is shared
+infrastructure — both the models and `create_app()` depend on it. It is not in
+`routes/`.
