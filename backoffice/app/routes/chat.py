@@ -15,7 +15,3 @@ def post_chat_message():
 
     answer = send_to_ai_agent(query)
     return jsonify(answer), 200
-
-
-
-
