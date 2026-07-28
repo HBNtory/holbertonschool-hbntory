@@ -1,6 +1,7 @@
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
 from google.genai.types import Content, Part
+from google.adk.errors.already_exists_error import AlreadyExistsError
 
 from agent import inventory_agent
 
@@ -16,11 +17,14 @@ runner = Runner(
 
 
 async def run_inventory_agent(question: str) -> str:
-    await session_service.create_session(
-        app_name="hbntory",
-        user_id="user",
-        session_id="default",
-    )
+    try:
+        await session_service.create_session(
+            app_name="hbntory",
+            user_id="user",
+            session_id="default",
+        )
+    except AlreadyExistsError:
+        pass
 
     events = runner.run_async(
         user_id="user",
@@ -30,9 +34,11 @@ async def run_inventory_agent(question: str) -> str:
             parts=[Part(text=question)],
         ),
     )
-
+    response = "No response."
     async for event in events:
-        if event.content and event.content.parts:
-            return event.content.parts[-1].text
+        print(event)
 
-    return "No response."
+        if event.content and event.content.parts:
+            response = event.content.parts[-1].text
+
+    return response
