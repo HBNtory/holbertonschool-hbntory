@@ -34,7 +34,8 @@ Once running:
 ```bash
 curl http://localhost:8080/health
 ```
-Expected response: `{"status": "ok"}`
+Expected response: `{"status": "ok", "database": "ok"}`
+Returns `503` if the database is unreachable
 
 ## Database (MySQL)
 Connect as root:
@@ -44,8 +45,18 @@ docker compose exec db mysql -u root -p
 
 Connect as the application user (directly on the `hbntory` database):
 ```bash
-docker compose exec db mysql -u <user> -p <password>
+docker compose exec db mysql -u <user> -p
 ```
 
 ## Environment variables
 See `.env.example` for the full list.
+
+## Troubleshooting
+
+### Orphan containers warning
+If you see a warning about *orphan containers* when starting the stack, it usually comes
+from leftover one-off containers (e.g from `docker compose run`).
+Clean them up with:
+```bash
+docker compose down --remove-orphans
+```
