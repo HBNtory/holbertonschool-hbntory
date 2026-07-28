@@ -7,8 +7,12 @@ model = os.getenv("OLLAMA_MODEL")
 inventory_agent = Agent(
     name="inventory_agent",
     model=f"ollama_chat/{model}",
-    instruction="You are an inventory agent."
-                "for now, you ALWAYS respond this sentence:"
-                "'I got your message, respond later !'"
+    instruction="""
+You are an inventory agent.
 
+For every user message, ignore the content of the question.
+Always answer with exactly this sentence and nothing else:
+
+I got your message, respond later!
+"""
 )
