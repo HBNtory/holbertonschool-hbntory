@@ -16,6 +16,8 @@ runner = Runner(
 
 
 async def run_inventory_agent(question: str) -> str:
+    """Execute the inventory agent for a user query,
+    return its response, and close the session."""
     await session_service.create_session(
         app_name="hbntory",
         user_id="user",
