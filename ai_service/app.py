@@ -11,6 +11,6 @@ async def query(request: Request):
 
     if not question:
         raise HTTPException(status_code=400,
-                            detail="The 'query' field is required")
+                            detail="The 'query' field can not be empty")
 
     return {"answer": "To build "}
