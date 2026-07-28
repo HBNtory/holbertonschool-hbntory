@@ -1,6 +1,7 @@
 from flask import Flask
 from app.config import Config
-from app.database import SessionLocal
+from app.database import SessionLocal, Base, engine
+from app.models.branch import Branch
 
 
 def create_app():
@@ -30,5 +31,7 @@ def create_app():
     def remove_session(exception=None):
         """Automatically closes database sessions when the query is complete"""
         SessionLocal.remove()
+
+    Base.metadata.create_all(bind=engine)
 
     return app
