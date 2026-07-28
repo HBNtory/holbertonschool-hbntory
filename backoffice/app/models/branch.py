@@ -9,6 +9,7 @@ from app.database import Base
 
 if TYPE_CHECKING:
     from app.models.user import User
+    from app.models.stock import Stock
 
 
 class Branch(Base):
@@ -19,3 +20,4 @@ class Branch(Base):
     label: Mapped[str] = mapped_column(String(100), unique=True)
 
     users: Mapped[list["User"]] = relationship(back_populates="branch")
+    stock: Mapped[list["Stock"]] = relationship(back_populates="branch")
