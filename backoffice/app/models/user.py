@@ -2,8 +2,9 @@ from datetime import datetime
 import enum
 from typing import TYPE_CHECKING
 
+from app.database import Base
 from sqlalchemy import String, Enum, Boolean, DateTime, func, ForeignKey
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 if TYPE_CHECKING:
     from app.models.branch import Branch
@@ -14,7 +15,7 @@ class UserRole(enum.Enum):
     employee = "employee"
 
 
-class User(DeclarativeBase):
+class User(Base):
     """A backoffice user, assigned to a branch, wtih a role and
      login credentials.
 
