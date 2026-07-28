@@ -6,6 +6,7 @@ app = FastAPI()
 
 @app.post("/query")
 async def ask_inventory_agent(request: Request):
+    """Receive a user query and return the inventory agent response."""
     query_json = await request.json()
     print(query_json)
     question = query_json.get("query")
