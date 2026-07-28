@@ -6,6 +6,7 @@ class Config:
     A Config class which read environment when it's load.
     No methods only attributes.
     """
-    # SECRET_KEY is a variable used by Flask to sign session/cookies
-    # SECRET_KEY = os.environ.get("SECRET_KEY", "dev-only-change-me")
-    pass
+    SQLALCHEMY_DATABASE_URI = (
+        f"mysql+pymysql://{os.environ['MYSQL_USER']}:{os.environ['MYSQL_PASSWORD']}"
+        f"@{os.environ['MYSQL_HOST']}:{os.environ['MYSQL_PORT']}/{os.environ['MYSQL_DATABASE']}"
+    )

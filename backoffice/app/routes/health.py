@@ -1,18 +1,27 @@
 """Health check blueprint for the backoffice service."""
 
 from flask import Blueprint
+from sqlalchemy import text
+from sqlalchemy.exc import SQLAlchemyError
+
+from app.database import SessionLocal
 
 bp = Blueprint("health", __name__)
 
 
 @bp.route("/health")
 def health():
-    """Return the service health status
+    """Return the service health status, including DB connectivity.
 
-    Used by monitoring and container orchestration to check that the
-    service is up and responding
+    Runs a lightweight `SELECT 1` to confirm the app can reach the
+    database. Used by monitoring and container orchestration.
 
     Returns:
-        a JSON dict and implicit 200 status
+        a JSON dict and a HTTP status code.
     """
-    return {"status": "ok"}
+    try:
+        session = SessionLocal()
+        session.execute(text("SELECT 1"))
+        return {"status": "ok", "database": "ok"}, 200
+    except SQLAlchemyError:
+        return {"status": "ok", "database": "unreachable"}, 503
