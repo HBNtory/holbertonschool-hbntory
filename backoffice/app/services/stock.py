@@ -1,5 +1,7 @@
-from app.exceptions.stock_exceptions import StockAlreadyExist, StockNotFound
-
+from app.clients.product_client import ProductClient
+from app.exceptions.stock_exceptions import (StockAlreadyExists,
+                                             StockNotFound,
+                                             ProductNotFound)
 from app.models.stock import Stock
 from app.repositories.stock import StockRepository
 from app.schemas.stock import StockCreate, StockUpdate
@@ -12,9 +14,14 @@ class StockService:
     exceptions, it does not deal with HTTP.
     """
 
-    def __init__(self, repository: StockRepository | None = None):
+    def __init__(
+            self,
+            repository: StockRepository | None = None,
+            product_client: ProductClient | None = None,
+    ):
         """Build the service with a repository (a default one if none given)."""
         self.repository = repository or StockRepository()
+        self.product_client = product_client or ProductClient()
 
     def create(self, data: StockCreate) -> Stock:
         """Create a stock row for a (branch, product) pair.
@@ -22,12 +29,14 @@ class StockService:
         Returns:
             The created Stock.
         """
-        # TODO: validate product_id against the Product API when integrated.
+        if not self.product_client.exists(data.product_id):
+            raise ProductNotFound(data.product_id)
+
         existing = self.repository.get_by_branch_and_product(
             data.branch_id, data.product_id
         )
         if existing is not None:
-            raise StockAlreadyExist(data.branch_id, data.product_id)
+            raise StockAlreadyExists(data.branch_id, data.product_id)
 
         stock = Stock(
             branch_id=data.branch_id,
