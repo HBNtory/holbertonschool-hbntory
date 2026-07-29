@@ -16,7 +16,8 @@ class Stock(Base):
 
     Links a Branch to a product referenced by the Product API's id
     (product_id is an opaque external reference, not a foreign key).
-    Unique per (branch_id, product_id); quantity is constrained to be non-negative.
+    Unique per (branch_id, product_id); quantity is constrained to
+    be non-negative.
     """
     __tablename__ = "stock"
     __table_args__ = (
