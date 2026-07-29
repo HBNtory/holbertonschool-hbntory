@@ -4,3 +4,4 @@ sqlalchemy==2.0.51
 pymysql==1.2.0
 pydantic==2.13.4
 requests==2.34.2
+argon2-cffi==25.1.0
