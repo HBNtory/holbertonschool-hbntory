@@ -12,3 +12,5 @@ class Config:
         f"@{os.environ['MYSQL_HOST']}:{os.environ['MYSQL_PORT']}"
         f"/{os.environ['MYSQL_DATABASE']}"
     )
+
+    PRODUCT_API_URL = os.environ['PRODUCT_API_URL']
