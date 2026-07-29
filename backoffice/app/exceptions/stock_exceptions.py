@@ -1,7 +1,11 @@
 """Business exceptions for the Stock entity."""
 
 
-class StockNotFound(Exception):
+class StockException(Exception):
+    """Base exception for stock-related errors."""
+
+
+class StockNotFound(StockException):
     """Raised when a stock row is not found."""
     
     def __init__(self, stock_id: int):
@@ -9,7 +13,7 @@ class StockNotFound(Exception):
         super().__init__(f"Stock not found: {stock_id}")
 
 
-class StockAlreadyExist(Exception):
+class StockAlreadyExist(StockException):
     """Raised when a stock row already exists for a (branch, product) pair."""
 
     def __init__(self, branch_id: int, product_id: int):
