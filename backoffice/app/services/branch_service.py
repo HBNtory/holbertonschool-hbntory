@@ -1,4 +1,5 @@
-""" Branch service module.
+"""
+Branch service module.
 Contains business logic related to branches.
 The service depends on a repository injected from outside.
 """
@@ -67,7 +68,7 @@ class BranchService:
                 If branch does not exist.
         """
 
-        branch = self.repository.get(branch_id)
+        branch = self.repository.get_by_id(branch_id)
 
         if branch is None:
             raise BranchNotFoundException(
