@@ -19,11 +19,11 @@ services:
   mcp_server:
     build:
       context: ./mcp_server
-    ports:
-      - "8000:8000"
     env_file:
       - .env
     restart: unless-stopped
+    ports:
+      - "8081:6000"
 
 
   backoffice:
@@ -45,6 +45,10 @@ services:
       context: ./ai_service
     env_file:
       - .env
+    ports:
+      - "8000:8000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 volumes:
   db_data:
