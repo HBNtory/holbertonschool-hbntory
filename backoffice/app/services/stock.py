@@ -19,7 +19,8 @@ class StockService:
             repository: StockRepository | None = None,
             product_client: ProductClient | None = None,
     ):
-        """Build the service with a repository (a default one if none given)."""
+        """Build the service with a repository
+        (a default one if none given)."""
         self.repository = repository or StockRepository()
         self.product_client = product_client or ProductClient()
 
@@ -55,7 +56,6 @@ class StockService:
         if stock is None:
             raise StockNotFound(stock_id)
         return stock
-
 
     def update(self, stock_id: int, data: StockUpdate) -> Stock:
         """Update the provided fields of a stock row (partial update).

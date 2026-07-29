@@ -7,7 +7,7 @@ class StockException(Exception):
 
 class StockNotFound(StockException):
     """Raised when a stock row is not found."""
-    
+
     def __init__(self, stock_id: int):
         self.stock_id = stock_id
         super().__init__(f"Stock not found: {stock_id}")
@@ -23,6 +23,7 @@ class StockAlreadyExists(StockException):
             f"Stock already exists for branch {branch_id}, "
             f"product {product_id}"
         )
+
 
 class ProductNotFound(StockException):
     """Raised when the product_id does not exist in the Product API."""

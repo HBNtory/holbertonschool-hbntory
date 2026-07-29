@@ -32,7 +32,11 @@ class StockRepository:
         local_session = SessionLocal()
         return local_session.get(Stock, stock_id)
 
-    def get_by_branch_and_product(self, branch_id: int, product_id: int) -> Stock | None:
+    def get_by_branch_and_product(
+            self,
+            branch_id: int,
+            product_id: int
+    ) -> Stock | None:
         """Return the stock row for a (branch, product) pair, or None.
 
         Used to renforce the unique (branch_id, product_id) constraint.
