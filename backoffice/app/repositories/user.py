@@ -11,7 +11,6 @@ class UserRepository:
     return User objects (or None). They contain no business logic and no HTTP.
     """
 
-
     def create(self, user: User) -> User:
         """Persist a new user.
 
@@ -24,7 +23,6 @@ class UserRepository:
         local_session.refresh(user)
         return user
 
-
     def get_by_id(self, user_id: int) -> User:
         """Return a user by primary key, or None if not found.
 
@@ -33,7 +31,6 @@ class UserRepository:
         """
         local_session = SessionLocal()
         return local_session.get(User, user_id)
-
 
     def get_by_email(self, user_email: str) -> User:
         """Return a user by email, or None if not found.
@@ -44,7 +41,6 @@ class UserRepository:
         local_session = SessionLocal()
         statement = select(User).where(User.email == user_email)
         return local_session.scalars(statement).first()
-
 
     def list(self, include_inactive: bool = False) -> list[User]:
         """List users, excluding soft-deleted ones by default.
@@ -57,7 +53,6 @@ class UserRepository:
         if not include_inactive:
             statement = statement.where(User.active.is_(True))
         return list(local_session.scalars(statement).all())
-
 
     def update(self, user: User) -> User:
         """Persist changes made to a user by the service.

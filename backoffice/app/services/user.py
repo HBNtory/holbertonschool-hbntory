@@ -16,7 +16,6 @@ class UserService:
         """Build the service with a repository (a default one if non given)."""
         self.repository = repository or UserRepository()
 
-
     def create(self, data: UserCreate) -> User:
         """Create a user, hashing the password before persistence.
 
@@ -36,7 +35,6 @@ class UserService:
         )
         return self.repository.create(user)
 
-
     def get(self, user_id: int) -> User:
         """Return a user by id
 
@@ -47,8 +45,6 @@ class UserService:
         if user is None:
             raise UserNotFound(user_id)
         return user
-
-
 
     def update(self, user_id: int, data: UserUpdate) -> User:
         """Update the provided fields of a user (partial update).
@@ -74,7 +70,6 @@ class UserService:
             setattr(user, key, value)
 
         return self.repository.update(user)
-
 
     def delete(self, user_id: int) -> None:
         """Soft-delete a user (set active=False), keeping the row.
