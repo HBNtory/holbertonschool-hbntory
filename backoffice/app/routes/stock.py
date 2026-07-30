@@ -1,12 +1,24 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
+from app.services.stock import StockService
 
-bp = Blueprint("stock", __name__)
+
+bp = Blueprint("stock", __name__, url_prefix="/stocks")
+
+stock_service = StockService()
 
 
-@bp.route("/stock")
-def test_stock():
-    """
-    Route to initiate a blueprint for stock api route to connect at
-    Flask app factory.
-    """
-    return {"Test stock": "ok"}
+@bp.route("/<string:branch_label>/<int:product_id>", methods=["GET"])
+def get_stock_by_branch_label_and_product_id(
+        branch_label: str, product_id: int):
+    stock = stock_service.get_stock_by_branch_label_and_product_id(
+        branch_label=branch_label, product_id=product_id
+    )
+
+    if stock is None:
+        return {"message": "là y'a une erreur"}, 404
+
+    return jsonify({
+        "branch_id": stock.branch_id,
+        "product_id": stock.product_id,
+        "quantity": stock.quantity,
+    }), 200
