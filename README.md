@@ -98,6 +98,20 @@ ollama serve
 ## Environment variables
 See `.env.example` for the full list.
 
+### Generate a JWT secret key
+
+Generate a secure secret key using Python:
+
+```bash
+python3 -c "import secrets; print(secrets.token_hex(32))"
+```
+
+Copy the generated value into your `.env` file:
+
+```env
+JWT_SECRET_KEY=<your_generated_secret_key>
+```
+
 ## Troubleshooting
 
 ### Orphan containers warning
