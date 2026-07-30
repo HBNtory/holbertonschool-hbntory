@@ -15,7 +15,7 @@ def get_stock_by_branch_label_and_product_id(
     )
 
     if stock is None:
-        return {"message": "là y'a une erreur"}, 404
+        return {"message": "No stock found"}, 404
 
     return jsonify({
         "branch_id": stock.branch_id,
