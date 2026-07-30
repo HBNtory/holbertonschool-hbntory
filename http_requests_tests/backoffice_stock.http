@@ -1,0 +1,57 @@
+###
+# Get stock list (all branches)
+GET http://localhost:8080/stocks
+
+###
+# Get stock list filtered by branch
+GET http://localhost:8080/stocks?branch_id=1
+
+###
+# Get stock by id
+GET http://localhost:8080/stocks/1
+
+###
+# Create a stock entry (product_id must exist in the Product API)
+POST http://localhost:8080/stocks
+Content-Type: application/json
+
+{
+  "branch_id": 1,
+  "product_id": 1,
+  "quantity": 100
+}
+
+###
+# Create a stock entry with an unknown product (expects 422 ProductNotFound)
+POST http://localhost:8080/stocks
+Content-Type: application/json
+
+{
+  "branch_id": 1,
+  "product_id": 9999999,
+  "quantity": 10
+}
+
+###
+# Create a duplicate stock entry (expects 409 StockAlreadyExist)
+POST http://localhost:8080/stocks
+Content-Type: application/json
+
+{
+  "branch_id": 1,
+  "product_id": 1,
+  "quantity": 50
+}
+
+###
+# Update stock quantity by id
+PATCH http://localhost:8080/stocks/1
+Content-Type: application/json
+
+{
+  "quantity": 250
+}
+
+###
+# Delete stock by id (hard delete)
+DELETE http://localhost:8080/stocks/1
