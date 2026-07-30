@@ -17,11 +17,13 @@ def create_user():
         return {"error": "email_already_exists", "message": str(e)}, 409
     return UserRead.model_validate(user).model_dump(), 201
 
+
 @bp.route("", methods=["GET"])
 def list_users():
     service = UserService()
     users = service.repository.list()
     return [UserRead.model_validate(user).model_dump() for user in users], 200
+
 
 @bp.route("/<int:user_id>", methods=["GET"])
 def get_user(user_id):
@@ -31,6 +33,7 @@ def get_user(user_id):
     except UserNotFound as e:
         return {"error": "not_found", "message": str(e)}, 404
     return UserRead.model_validate(user).model_dump(), 200
+
 
 @bp.route("/<int:user_id>", methods=["PATCH"])
 def update_user(user_id: int):
@@ -43,6 +46,7 @@ def update_user(user_id: int):
     except EmailAlreadyExists as e:
         return {"error": "email_already_exist", "message": str(e)}, 409
     return UserRead.model_validate(user).model_dump(), 200
+
 
 @bp.route("/<int:user_id>", methods=["DELETE"])
 def delete_user(user_id):

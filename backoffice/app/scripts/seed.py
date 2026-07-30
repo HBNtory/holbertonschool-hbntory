@@ -10,6 +10,7 @@ from app.schemas.user import UserCreate
 from app.models.user import UserRole
 from app.config import Config
 
+
 def seed_branches(branch_service: BranchService) -> list:
     labels = ["Lille", "Paris"]
     branches = []
@@ -26,7 +27,7 @@ def seed_branches(branch_service: BranchService) -> list:
 
 
 def seed_admin(user_service: UserService, branch_id: int) -> None:
-    admin_email =Config.ADMIN_BACKOFFICE_EMAIL
+    admin_email = Config.ADMIN_BACKOFFICE_EMAIL
     admin_password = Config.ADMIN_BACKOFFICE_PASSWORD
 
     if user_service.repository.get_by_email(admin_email) is not None:
