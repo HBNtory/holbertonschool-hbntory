@@ -5,6 +5,8 @@ from google.adk.tools.mcp_tool.mcp_session_manager import (
 )
 from services.prompt import prompt
 
+import os
+
 mcp_server_url = os.environ.get("MCP_SERVER_URL")
 model = os.getenv("OLLAMA_MODEL")
 

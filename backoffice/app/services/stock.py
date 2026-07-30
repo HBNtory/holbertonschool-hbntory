@@ -83,3 +83,6 @@ class StockService:
             branch_label=branch_label,
             product_id=product_id,
         )
+
+    def get_stock_by_branch_label(self, branch_label: str) -> list[Stock]:
+        return self.repository.get_stock_by_branch_label(branch_label)

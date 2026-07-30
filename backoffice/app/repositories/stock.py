@@ -3,6 +3,7 @@ from sqlalchemy import select
 from app import SessionLocal
 from app.models.stock import Stock
 from app.models.branch import Branch
+from typing import List
 
 
 class StockRepository:
@@ -96,3 +97,21 @@ class StockRepository:
         local_session = SessionLocal()
         local_session.delete(stock_to_delete)
         local_session.commit()
+
+    def get_stock_by_branch_label(
+            self,
+            branch_label: str,
+    ) -> List[Stock]:
+
+        local_session = SessionLocal()
+
+        statement = (
+            select(Stock)
+            .join(Branch)
+            .where(
+                Branch.label == branch_label,
+                Stock.quantity > 0,
+            )
+        )
+
+        return list(local_session.scalars(statement).all())
