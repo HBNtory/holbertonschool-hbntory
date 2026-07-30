@@ -3,7 +3,7 @@
 import os
 
 from app import create_app
-from app.services.branch import BranchService
+from app.services.branch_service import BranchService
 from app.services.user import UserService
 from app.schemas.branch import BranchCreate
 from app.schemas.user import UserCreate
