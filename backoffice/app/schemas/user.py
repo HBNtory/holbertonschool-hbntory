@@ -32,7 +32,10 @@ class UserRead(BaseModel):
     """Output schema for returning a user.
     Never exposes the password or its hash.
     """
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(
+        from_attributes=True,
+        use_enum_values=True,
+    )
 
     id: int
     first_name: str

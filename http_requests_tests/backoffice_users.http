@@ -1,0 +1,48 @@
+###
+# Get Users list
+GET http://localhost:8080/users
+
+###
+# Get User by id
+GET http://localhost:8080/users/1
+
+###
+# Create a new user with role
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "first_name": "Arthur",
+  "last_name": "lito",
+  "email": "arthur.l@holberton.com",
+  "password": "Xx_DarkMistirgri_xX*",
+  "role": "employee",
+  "branch_id": 1
+}
+
+###
+# Create a new user without role
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "first_name": "Arthur",
+  "last_name": "lito",
+  "email": "arthur.le@holberton.com",
+  "password": "Xx_DarkMistirgri_xX*",
+  "branch_id": 1
+}
+
+###
+# Update user with id
+PATCH http://localhost:8080/users/3
+Content-Type: application/json
+
+{
+  "last_name": "clio5",
+  "first_name": "renault"
+}
+
+###
+# Soft Delete user with id
+DELETE http://localhost:8080/users/3
