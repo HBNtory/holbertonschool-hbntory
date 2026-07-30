@@ -30,6 +30,7 @@ def get_branch(branch_id: int):
         branch = service.get(branch_id)
     except BranchNotFoundException as e:
         return {"error": "not_found", "message": str(e)}, 404
+    return BranchRead.model_validate(branch).model_dump(), 200
 
 @bp.route("/<int:branch_id>", methods=["PATCH"])
 def update_branch(branch_id: int):
