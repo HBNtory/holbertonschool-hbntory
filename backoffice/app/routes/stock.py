@@ -1,9 +1,11 @@
 import requests
-from flask import Blueprint, request
+from flask import Blueprint, jsonify, request
 
-from app.exceptions.stock_exceptions import (ProductNotFound,
-                                             StockAlreadyExists,
-                                             StockNotFound)
+from app.exceptions.stock_exceptions import (
+    ProductNotFound,
+    StockAlreadyExists,
+    StockNotFound,
+)
 from app.schemas.stock import StockCreate, StockRead, StockUpdate
 from app.services.stock import StockService
 
@@ -65,3 +67,26 @@ def delete_stock(stock_id):
     except StockNotFound as exc:
         return {"error": "not_found", "message": str(exc)}, 404
     return "", 204
+
+
+stock_service = StockService()
+
+
+@bp.route("/<string:branch_label>/<int:product_id>", methods=["GET"])
+def get_stock_by_branch_label_and_product_id(
+    branch_label: str,
+    product_id: int,
+):
+    stock = stock_service.get_stock_by_branch_label_and_product_id(
+        branch_label=branch_label,
+        product_id=product_id,
+    )
+
+    if stock is None:
+        return {"message": "No stock found"}, 404
+
+    return jsonify({
+        "branch_id": stock.branch_id,
+        "product_id": stock.product_id,
+        "quantity": stock.quantity,
+    }), 200
