@@ -5,8 +5,9 @@ Contains database access logic for the Branch entity.
 This is the only layer that interacts with SQLAlchemy.
 """
 
-from sqlalchemy.orm import Session
+from sqlalchemy import select
 
+from app.database import SessionLocal
 from app.models.branch import Branch
 
 
@@ -14,15 +15,6 @@ class BranchRepository:
     """
     Repository responsible for Branch data access.
     """
-
-    def __init__(self, session: Session):
-        """
-        Initialize repository with an injected session.
-
-        Args:
-            session: SQLAlchemy database session.
-        """
-        self.session = session
 
     def create(self, branch: Branch) -> Branch:
         """
@@ -34,11 +26,10 @@ class BranchRepository:
         Returns:
             Created branch.
         """
-
-        self.session.add(branch)
-        self.session.commit()
-        self.session.refresh(branch)
-
+        local_session = SessionLocal()
+        local_session.add(branch)
+        local_session.commit()
+        local_session.refresh(branch)
         return branch
 
     def get_by_id(self, branch_id: int) -> Branch | None:
@@ -51,34 +42,31 @@ class BranchRepository:
         Returns:
             Branch ORM object or None.
         """
-
-        return self.session.get(
+        local_session = SessionLocal()
+        return local_session.get(
             Branch,
             branch_id,
         )
 
+    def get_by_label(self, label: str) -> Branch | None:
+        """Return a branch by label, or None if not found."""
+        local_session = SessionLocal()
+        statement = select(Branch).where(Branch.label == label)
+        return local_session.scalars(statement).first()
+
     def list(
         self,
-        label: str | None = None,
     ) -> list[Branch]:
         """
         Retrieve branches with optional filters.
-
-        Args:
-            label: Optional label filter.
 
         Returns:
             List of Branch ORM objects.
         """
 
-        query = self.session.query(Branch)
-
-        if label:
-            query = query.filter(
-                Branch.label == label
-            )
-
-        return query.all()
+        local_session = SessionLocal()
+        statement = select(Branch)
+        return list(local_session.scalars(statement).all())
 
     def update(self, branch: Branch) -> Branch:
         """
@@ -91,12 +79,12 @@ class BranchRepository:
             Updated branch.
         """
 
-        self.session.commit()
-        self.session.refresh(branch)
-
+        local_session = SessionLocal()
+        local_session.commit()
+        local_session.refresh(branch)
         return branch
 
-    def delete(self, branch: Branch) -> Branch:
+    def delete(self, branch: Branch) -> None:
         """
         Delete a branch.
 
@@ -106,8 +94,6 @@ class BranchRepository:
         Returns:
             Deleted branch.
         """
-
-        self.session.delete(branch)
-        self.session.commit()
-
-        return branch
+        local_session = SessionLocal()
+        local_session.delete(branch)
+        local_session.commit()
