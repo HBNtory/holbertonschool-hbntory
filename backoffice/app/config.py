@@ -14,3 +14,9 @@ class Config:
     )
 
     PRODUCT_API_URL = os.environ['PRODUCT_API_URL']
+
+    JWT_SECRET_KEY = os.environ["JWT_SECRET_KEY"]
+
+    JWT_EXPIRATION_HOURS = int(
+        os.environ.get("JWT_EXPIRATION_HOURS", "24")
+    )
