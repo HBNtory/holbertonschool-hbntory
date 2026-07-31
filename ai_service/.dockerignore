@@ -6,5 +6,3 @@ venv/
 *.md
 .dockerignore
 Dockerfile
-
-test_client.py

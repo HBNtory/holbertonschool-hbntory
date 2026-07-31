@@ -73,3 +73,16 @@ class StockService:
         """Hard-delete a stock row."""
         stock = self.get(stock_id)
         self.repository.delete(stock)
+
+    def get_stock_by_branch_label_and_product_id(
+            self,
+            branch_label: str,
+            product_id: int,
+    ) -> Stock | None:
+        return self.repository.get_stock_by_branch_label_and_product_id(
+            branch_label=branch_label,
+            product_id=product_id,
+        )
+
+    def get_stock_by_branch_label(self, branch_label: str) -> list[Stock]:
+        return self.repository.get_stock_by_branch_label(branch_label)

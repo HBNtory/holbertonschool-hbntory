@@ -49,6 +49,33 @@ docker compose exec db mysql -u <user> -p
 
 *Note: if you want to reset everything and delete the saved data, use `docker-compose down -v`*
 
+## Seeding the database
+
+The seed script populates the database with initial data: two branches
+(Lille, Paris) and an admin user. It is idempotent — running it several times
+will not create duplicates.
+
+### Prerequisites
+- The database must be running and healthy.
+- The following variables must be set in your `.env`:
+```.dotenv
+ADMIN_BACKOFFICE_EMAIL=...
+ADMIN_BACKOFFICE_PASSWORD=...
+```
+
+### Run
+From inside the backoffice container (or via `docker compose run`):
+```bash
+docker compose run --rm backoffice python -m app.scripts.seed
+```
+
+The script runs as a module (`-m app.scripts.seed`), not as a file path, so
+Python resolves the `app` package correctly.
+
+Expected output on first run: branches and the admin user are created.
+On a second run, everything reports "already exists, skipping" (idempotence).
+
+
 ## Ollama
 
 This project uses **Ollama** to run a local AI model.
