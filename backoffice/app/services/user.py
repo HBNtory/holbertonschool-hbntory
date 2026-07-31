@@ -1,5 +1,7 @@
-from app.exceptions.user_exceptions import EmailAlreadyExists, UserNotFound
-from app.models.user import User
+from app.exceptions.user_exceptions import (EmailAlreadyExists,
+                                            UserNotFound,
+                                            AdminAlreadyExists)
+from app.models.user import User, UserRole
 from app.schemas.user import UserCreate, UserUpdate
 from app.repositories.user import UserRepository
 from app.utils.security import hash_password
@@ -22,6 +24,9 @@ class UserService:
         Returns:
              The created user.
         """
+        if data.role == UserRole.admin and self.repository.admin_exists():
+            raise AdminAlreadyExists()
+
         if self.repository.get_by_email(data.email) is not None:
             raise EmailAlreadyExists(data.email)
 
@@ -34,6 +39,10 @@ class UserService:
             branch_id=data.branch_id
         )
         return self.repository.create(user)
+
+    def list(self) -> list[User]:
+        """Return all users."""
+        return self.repository.list()
 
     def get(self, user_id: int) -> User:
         """Return a user by id
@@ -57,6 +66,11 @@ class UserService:
         """
         user = self.get(user_id)
         fields = data.model_dump(exclude_unset=True)
+
+        if (fields.get("role") == UserRole.admin and
+                user.role != UserRole.admin):
+            if self.repository.admin_exists():
+                raise AdminAlreadyExists()
 
         if "email" in fields:
             existing = self.repository.get_by_email(fields["email"])

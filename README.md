@@ -36,6 +36,29 @@ curl http://localhost:8080/health
 Expected response: `{"status": "ok", "database": "ok"}`
 Returns `503` if the database is unreachable
 
+## Development mode (Flask debug)
+
+The backoffice reads the `FLASK_DEBUG` environment variable to toggle Flask's
+debug mode. When enabled, the server auto-reloads on Python changes and Jinja
+re-reads templates on every request, so editing code or templates only requires
+a browser refresh — no container restart.
+
+Enable it by setting the variable in your `.env`:
+```dotenv
+FLASK_DEBUG=1
+```
+
+Then restart the backoffice once to load the change:
+```bash
+docker compose restart backoffice
+```
+
+Disable it by setting `FLASK_DEBUG=0` (the default in `.env.example`) or removing
+the variable entirely.
+
+> **Warning:** never enable debug mode in production. Flask's debugger exposes an
+> interactive console that allows arbitrary code execution on the server.
+
 ## Database (MySQL)
 Connect as root:
 ```bash
@@ -48,6 +71,33 @@ docker compose exec db mysql -u <user> -p
 ```
 
 *Note: if you want to reset everything and delete the saved data, use `docker-compose down -v`*
+
+## Seeding the database
+
+The seed script populates the database with initial data: two branches
+(Lille, Paris) and an admin user. It is idempotent — running it several times
+will not create duplicates.
+
+### Prerequisites
+- The database must be running and healthy.
+- The following variables must be set in your `.env`:
+```.dotenv
+ADMIN_BACKOFFICE_EMAIL=...
+ADMIN_BACKOFFICE_PASSWORD=...
+```
+
+### Run
+From inside the backoffice container (or via `docker compose run`):
+```bash
+docker compose run --rm backoffice python -m app.scripts.seed
+```
+
+The script runs as a module (`-m app.scripts.seed`), not as a file path, so
+Python resolves the `app` package correctly.
+
+Expected output on first run: branches and the admin user are created.
+On a second run, everything reports "already exists, skipping" (idempotence).
+
 
 ## Ollama
 
@@ -97,6 +147,67 @@ ollama serve
 
 ## Environment variables
 See `.env.example` for the full list.
+
+### Generate a JWT secret key
+
+Generate a secure secret key using Python:
+
+```bash
+python3 -c "import secrets; print(secrets.token_hex(32))"
+```
+
+Copy the generated value into your `.env` file:
+
+```env
+JWT_SECRET_KEY=<your_generated_secret_key>
+```
+
+## Authentication
+
+The backoffice uses JWT (JSON Web Token) authentication.
+
+### Login
+
+Authenticate using:
+
+```http
+POST /auth/login
+```
+
+Request body:
+
+```json
+{
+  "email": "user@example.com",
+  "password": "your_password"
+}
+```
+
+A successful authentication returns a JWT token:
+
+```json
+{
+  "token": "<jwt_token>"
+}
+```
+
+Use this token in the `Authorization` header when accessing protected endpoints:
+
+```http
+Authorization: Bearer <jwt_token>
+```
+
+### Logout
+
+Logout is available through:
+
+```http
+POST /auth/logout
+```
+
+Because JWT authentication is stateless, the server does not maintain user sessions.
+
+Logging out consists of removing the JWT from the client. A previously issued token remains valid until it expires.
 
 ## Troubleshooting
 

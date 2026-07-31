@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}HBntory — Backoffice{% endblock %}</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .grid-bg {
+            background-color: #ede9fe;
+            background-image:
+                linear-gradient(rgba(217, 70, 239, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(34, 211, 238, 0.15) 1px, transparent 1px);
+            background-size: 28px 28px;
+        }
+    </style>
+</head>
+<body class="grid-bg min-h-screen font-mono text-fuchsia-900">
+    <header class="flex items-center justify-between px-6 py-4 border-b-2 border-fuchsia-500 bg-white/70">
+        <a href="/admin" class="text-lg font-bold uppercase tracking-tight text-fuchsia-600">
+            HB<span class="text-cyan-500">ntory</span>
+            <span class="text-neutral-400 text-sm">/ backoffice</span>
+        </a>
+        <form method="POST" action="/logout" class="inline">
+            <button type="submit" class="text-xs uppercase text-cyan-700 hover:underline">log out</button>
+        </form>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-8">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

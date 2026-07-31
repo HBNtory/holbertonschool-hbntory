@@ -1,7 +1,7 @@
 from sqlalchemy import select
 
 from app.database import SessionLocal
-from app.models.user import User
+from app.models.user import User, UserRole
 
 
 class UserRepository:
@@ -66,3 +66,12 @@ class UserRepository:
         local_session.commit()
         local_session.refresh(user)
         return user
+
+    def admin_exists(self) -> bool:
+        """Return True if an active admin already exists."""
+        local_session = SessionLocal()
+        statement = select(User).where(
+            User.role == UserRole.admin,
+            User.active.is_(True),
+        )
+        return local_session.scalars(statement).first() is not None
