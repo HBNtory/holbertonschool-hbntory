@@ -25,8 +25,17 @@ class ProductClient:
         return False
 
     def list(self) -> list[dict]:
-        url = f"{self.base_url}/api/v1/products"
-        response = requests.get(url, timeout=5)
-        response.raise_for_status()
-
-        return response.json()["catalog"]
+        products = []
+        offset = 0
+        limit = 100
+        while True:
+            url = f"{self.base_url}/api/v1/products"
+            params = {"limit": limit, "offset": offset}
+            response = requests.get(url, params=params, timeout=5)
+            response.raise_for_status()
+            page = response.json()["results"]
+            if not page:
+                break
+            products.extend(page)
+            offset += limit
+        return products

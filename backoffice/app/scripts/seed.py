@@ -1,14 +1,20 @@
 """Seed script: populates the DB with initial data (run manually)."""
 
 import os
+import random
 
 from app import create_app
+from app.exceptions.stock_exceptions import StockAlreadyExists
+from app.schemas.stock import StockCreate
 from app.services.branch_service import BranchService
+from app.services.stock import StockService
 from app.services.user import UserService
 from app.schemas.branch import BranchCreate
 from app.schemas.user import UserCreate
 from app.models.user import UserRole
 from app.config import Config
+
+QUANTITY_RANGE = (0, 200)
 
 
 def seed_branches(branch_service: BranchService) -> list:
@@ -45,13 +51,36 @@ def seed_admin(user_service: UserService, branch_id: int) -> None:
     print(f"Admin {admin_email} created.")
 
 
+def seed_stocks(stock_service: StockService, branches: list) -> None:
+    catalog = stock_service.product_client.list()
+    if not catalog:
+        print("Product catalog is empty, no stock seeded.")
+        return
+
+    created = 0
+    skipped = 0
+    for product in catalog:
+        product_id = product["id"]
+        for branch in branches:
+            try:
+                stock_service.create(StockCreate(
+                    branch_id=branch.id,
+                    product_id=product_id,
+                    quantity=random.randint(*QUANTITY_RANGE),
+                ))
+                created += 1
+            except StockAlreadyExists:
+                skipped += 1
+
+    print(f"Stocks seeded: {created} created, {skipped} skipped.")
 def seed() -> None:
     branch_service = BranchService()
     user_service = UserService()
+    stock_service = StockService()
 
     branches = seed_branches(branch_service)
     seed_admin(user_service, branches[0].id)
-
+    seed_stocks(stock_service, branches)
 
 if __name__ == "__main__":
     app = create_app()
