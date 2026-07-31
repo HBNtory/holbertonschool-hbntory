@@ -1,4 +1,6 @@
-from app.exceptions.user_exceptions import EmailAlreadyExists, UserNotFound, AdminAlreadyExists
+from app.exceptions.user_exceptions import (EmailAlreadyExists,
+                                            UserNotFound,
+                                            AdminAlreadyExists)
 from app.models.user import User, UserRole
 from app.schemas.user import UserCreate, UserUpdate
 from app.repositories.user import UserRepository
@@ -65,7 +67,8 @@ class UserService:
         user = self.get(user_id)
         fields = data.model_dump(exclude_unset=True)
 
-        if fields.get("role") == UserRole.admin and user.role != UserRole.admin:
+        if (fields.get("role") == UserRole.admin and
+                user.role != UserRole.admin):
             if self.repository.admin_exists():
                 raise AdminAlreadyExists()
 

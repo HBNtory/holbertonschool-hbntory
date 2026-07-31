@@ -12,5 +12,7 @@ class EmailAlreadyExists(UserException):
 class UserNotFound(UserException):
     """Raised when a user is not found."""
 
+
 class AdminAlreadyExists(UserException):
-    """Raised when creating or promoting a second admin (only one allowed)."""
+    """Raised when creating or promoting a second admin
+     (only one allowed)."""
