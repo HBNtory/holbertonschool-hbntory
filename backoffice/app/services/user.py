@@ -35,6 +35,10 @@ class UserService:
         )
         return self.repository.create(user)
 
+    def list(self) -> list[User]:
+        """Return all users."""
+        return self.repository.list()
+
     def get(self, user_id: int) -> User:
         """Return a user by id
 
