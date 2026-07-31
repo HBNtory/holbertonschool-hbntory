@@ -7,7 +7,12 @@ mcp = FastMCP("Product MCP Server")
 
 @mcp.tool
 def get_product_by_id(id: int):
-    """Get a product by id."""
+    """
+    Retrieve a single product using its unique numeric ID.
+
+    Use this tool when the user explicitly provides a product ID.
+    Returns the product identifier, SKU and name.
+    """
 
     response = requests.get(
         f"{PRODUCT_API_URL}/api/v1/products/{id}"
@@ -30,7 +35,12 @@ def get_product_by_id(id: int):
 
 @mcp.tool
 def get_product_by_sku(sku: str):
-    """Get a product by SKU."""
+    """
+    Retrieve a single product using its SKU.
+
+    Use this tool when the user provides an exact SKU.
+    Returns the product identifier, SKU and name.
+    """
 
     response = requests.get(
         f"{PRODUCT_API_URL}/api/v1/products/{sku}"
@@ -53,7 +63,15 @@ def get_product_by_sku(sku: str):
 
 @mcp.tool
 def get_product_by_name(query: str):
-    """Search products by name, SKU, description or tags."""
+    """
+    Search the product catalog by keyword.
+
+    Use this tool when the user provides a product name,
+    a partial name, a SKU fragment, a description keyword
+    or a tag.
+
+    Returns a list of matching products.
+    """
 
     response = requests.get(
         f"{PRODUCT_API_URL}/api/v1/products/search",
@@ -72,7 +90,15 @@ def get_product_by_name(query: str):
 @mcp.tool
 def get_stock_by_branch_label_and_product_id(branch_label: str,
                                              product_id: int):
-    """Get stock for a product in a branch."""
+    """
+    Retrieve the stock quantity of a specific product
+    in a specific branch.
+
+    Use this tool when both the branch and the product
+    are known.
+
+    Returns the stock information for that product only.
+    """
 
     response = requests.get(
         f"{BACKOFFICE_API_URL}/stocks/{branch_label}/{product_id}"
@@ -90,7 +116,15 @@ def get_stock_by_branch_label_and_product_id(branch_label: str,
 
 @mcp.tool
 def get_available_products_by_branch(branch_label: str):
-    """Get all available products in a branch."""
+    """
+    Retrieve all products available in a branch.
+
+    Use this tool when the user asks which products
+    are available in a given branch or wants the
+    branch inventory.
+
+    Returns a list of products with their quantity.
+    """
 
     response = requests.get(
         f"{BACKOFFICE_API_URL}/stocks/{branch_label}"

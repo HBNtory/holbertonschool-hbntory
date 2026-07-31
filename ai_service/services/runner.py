@@ -34,10 +34,14 @@ async def run_inventory_agent(question: str) -> str:
             ),
         )
         response = "No response."
+
         async for event in events:
-            print(event.content)
-            if event.content and event.content.parts:
-                response = event.content.parts[-1].text
+            if not event.content:
+                continue
+
+            for part in event.content.parts:
+                if part.text:
+                    response = part.text
 
         return response
 
