@@ -12,9 +12,6 @@ AI service.
 The project is fully containerized using Docker Compose to provide a
 reproducible development environment.
 
-Internal backoffice service (Flask) for managing users, branches and stock, backed
-by a MySQL database.
-
 ## Team Members
 
 - Maxime
@@ -93,31 +90,39 @@ cp .env.example .env
 ```
 
 ## Running the services
-Using:
+
+Start the complete application:
+
+```bash
 docker compose up --build
+```
 
-### Run individual services
-
-Backoffice:
+Run only the Backoffice:
 
 ```bash
 docker compose up --build backoffice
+```
 
-AI Service:
+Run only the AI Service:
 
+```bash
 docker compose up --build ai_service
+```
 
-MCP Server:
+Run only the MCP Server:
 
+```bash
 docker compose up --build mcp_server
+```
 
-Database:
+Run only the database:
 
+```bash
 docker compose up db
+```
 
----
+Stop all services:
 
-Stop the services:
 ```bash
 docker compose down
 ```
@@ -280,6 +285,22 @@ Because JWT authentication is stateless, the server does not maintain user sessi
 
 Logging out consists of removing the JWT from the client. A previously issued token remains valid until it expires.
 
+## Accessing the Backoffice
+
+Once the application is running, the Backoffice is available at:
+
+http://localhost:8080
+
+Useful endpoints:
+
+- GET /health
+- POST /auth/login
+- POST /auth/logout
+- /users
+- /branches
+- /stocks
+- /chat
+
 ## Main Technical Decisions
 
 ### Flask Application Factory
@@ -315,3 +336,9 @@ Clean them up with:
 ```bash
 docker compose down --remove-orphans
 ```
+## Known Limitations
+
+- JWT authentication is stateless; logout only removes the token from the client.
+- No token revocation mechanism is implemented.
+- Database schema is initialized using SQLAlchemy without migration support.
+- Some automated tests are still under development.
