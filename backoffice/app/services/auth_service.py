@@ -59,3 +59,14 @@ class AuthService:
             )
 
         return generate_token(user)
+
+    def logout(self) -> None:
+        """Logout the current user.
+
+        With JWT authentication, the server does not keep session state.
+        Logout is performed by the client deleting the JWT.
+
+        Returns:
+        None
+        """
+        return None
