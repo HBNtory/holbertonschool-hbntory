@@ -1,0 +1,52 @@
+{% extends "base_admin.html" %}
+
+{% block title %}HBntory — Branches{% endblock %}
+
+{% block content %}
+<a href="/admin" class="inline-block mb-4 text-xs uppercase text-cyan-700 hover:underline">&larr; back to dashboard</a>
+
+<div class="flex items-center justify-between mb-5">
+    <div>
+        <p class="text-xs uppercase text-neutral-400 mb-1">dashboard / branches</p>
+        <h1 class="text-2xl font-bold uppercase tracking-tight text-fuchsia-600">Branches</h1>
+    </div>
+    <a href="/admin/branches/new"
+       class="border-2 border-fuchsia-600 bg-fuchsia-400 px-4 py-2 text-xs font-bold uppercase text-white shadow-[4px_4px_0px_#a21caf] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
+        + New branch
+    </a>
+</div>
+
+<div class="border-2 border-fuchsia-500 bg-white/90 shadow-[6px_6px_0px_#c026d3] overflow-x-auto">
+    <table class="w-full text-sm">
+        <thead class="bg-fuchsia-100 text-fuchsia-700 uppercase text-xs">
+            <tr>
+                <th class="text-left px-4 py-2.5">Label</th>
+                <th class="text-left px-4 py-2.5">Users</th>
+                <th class="text-left px-4 py-2.5">Stock lines</th>
+                <th class="px-4 py-2.5"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for branch in branches %}
+            <tr class="border-t border-fuchsia-100 hover:bg-fuchsia-50">
+                <td class="px-4 py-2.5">{{ branch.label }}</td>
+                <td class="px-4 py-2.5">{{ branch.users | length }}</td>
+                <td class="px-4 py-2.5">{{ branch.stock | length }}</td>
+                <td class="px-4 py-2.5 text-right whitespace-nowrap">
+                    <a href="/admin/branches/{{ branch.id }}/edit" class="text-cyan-600 hover:underline">edit</a>
+                    &nbsp;
+                    <form method="POST" action="/admin/branches/{{ branch.id }}/delete" class="inline"
+                          onsubmit="return confirm('Delete this branch?');">
+                        <button type="submit" class="text-red-500 hover:underline">del</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" class="px-4 py-6 text-center text-neutral-400 text-sm">No branches yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

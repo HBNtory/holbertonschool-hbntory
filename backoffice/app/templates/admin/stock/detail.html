@@ -1,0 +1,64 @@
+{% extends "base_admin.html" %}
+
+{% block title %}HBntory — Stock / {{ branch.label }}{% endblock %}
+
+{% block content %}
+<a href="/admin/stock" class="inline-block mb-4 text-xs uppercase text-cyan-700 hover:underline">&larr; back to branch selection</a>
+
+<div class="flex items-center justify-between mb-5">
+    <div>
+        <p class="text-xs uppercase text-neutral-400 mb-1">stock / {{ branch.label }}</p>
+        <h1 class="text-2xl font-bold uppercase tracking-tight text-fuchsia-600">{{ branch.label }} stock</h1>
+    </div>
+    <a href="/admin/stock/{{ branch.id }}/new"
+       class="border-2 border-fuchsia-600 bg-fuchsia-400 px-4 py-2 text-xs font-bold uppercase text-white shadow-[4px_4px_0px_#a21caf] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
+        + New stock
+    </a>
+</div>
+
+{% if names is none %}
+<div class="mb-5 border-l-4 border-yellow-500 bg-yellow-50 p-4">
+    <p class="text-sm text-yellow-800">Product catalog unreachable — showing product ids instead of names.</p>
+</div>
+{% endif %}
+
+<div class="border-2 border-fuchsia-500 bg-white/90 shadow-[6px_6px_0px_#c026d3] overflow-x-auto">
+    <table class="w-full text-sm">
+        <thead class="bg-fuchsia-100 text-fuchsia-700 uppercase text-xs">
+            <tr>
+                <th class="text-left px-4 py-2.5">Product</th>
+                <th class="text-left px-4 py-2.5">Product id</th>
+                <th class="text-left px-4 py-2.5">Quantity</th>
+                <th class="px-4 py-2.5"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stock in stocks %}
+            <tr class="border-t border-fuchsia-100 hover:bg-fuchsia-50">
+                <td class="px-4 py-2.5">
+                    {% if names and names.get(stock.product_id) %}
+                        {{ names[stock.product_id] }}
+                    {% else %}
+                        <span class="text-neutral-400">&mdash;</span>
+                    {% endif %}
+                </td>
+                <td class="px-4 py-2.5 text-fuchsia-500">{{ stock.product_id }}</td>
+                <td class="px-4 py-2.5">{{ stock.quantity }}</td>
+                <td class="px-4 py-2.5 text-right whitespace-nowrap">
+                    <a href="/admin/stock/{{ branch.id }}/{{ stock.id }}/edit" class="text-cyan-600 hover:underline">edit</a>
+                    &nbsp;
+                    <form method="POST" action="/admin/stock/{{ branch.id }}/{{ stock.id }}/delete" class="inline"
+                          onsubmit="return confirm('Delete this stock line?');">
+                        <button type="submit" class="text-red-500 hover:underline">del</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" class="px-4 py-6 text-center text-neutral-400 text-sm">No stock in this branch yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

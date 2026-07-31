@@ -1,0 +1,52 @@
+{% extends "base_admin.html" %}
+
+{% block title %}HBntory — {% if stock %}Edit stock{% else %}New stock{% endif %}{% endblock %}
+
+{% block content %}
+<a href="/admin/stock/{{ branch.id }}" class="inline-block mb-4 text-xs uppercase text-cyan-700 hover:underline">&larr; back to {{ branch.label }} stock</a>
+
+<h1 class="text-2xl font-bold uppercase tracking-tight text-fuchsia-600 mb-6">
+    {% if stock %}Edit stock{% else %}New stock{% endif %} &middot; {{ branch.label }}
+</h1>
+
+{% if error %}
+<div class="mb-5 border-l-4 border-red-500 bg-red-50 p-4">
+    <p class="text-sm text-red-900">{{ error }}</p>
+</div>
+{% endif %}
+
+<form method="POST" class="border-2 border-fuchsia-500 bg-white/90 p-6 shadow-[6px_6px_0px_#c026d3] max-w-lg space-y-4">
+
+    <div>
+        <label class="block text-xs uppercase text-fuchsia-600 mb-1">Product</label>
+        {% if stock %}
+        <input type="text" readonly
+               value="{{ stock.product_id }}"
+               class="w-full border-2 border-neutral-300 bg-neutral-100 p-2 text-sm text-neutral-500">
+        <input type="hidden" name="product_id" value="{{ stock.product_id }}">
+        <p class="text-xs text-neutral-400 mt-1">Product can't be changed. Delete and recreate to change it.</p>
+        {% else %}
+        <select name="product_id" required
+                class="w-full border-2 border-fuchsia-300 bg-white p-2 text-sm text-fuchsia-900 focus:outline-none focus:border-cyan-500">
+            {% for product in products %}
+            <option value="{{ product.id }}">{{ product.name }} (#{{ product.id }})</option>
+            {% endfor %}
+        </select>
+        {% endif %}
+    </div>
+
+    <div>
+        <label class="block text-xs uppercase text-fuchsia-600 mb-1">Quantity</label>
+        <input type="number" name="quantity" min="0" required
+               value="{{ stock.quantity if stock else 0 }}"
+               class="w-full border-2 border-fuchsia-300 bg-white p-2 text-sm text-fuchsia-900 focus:outline-none focus:border-cyan-500">
+    </div>
+
+    <div class="flex justify-end pt-2">
+        <button type="submit"
+                class="border-2 border-fuchsia-600 bg-fuchsia-400 px-6 py-2 text-sm font-bold uppercase text-white shadow-[4px_4px_0px_#a21caf] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
+            {% if stock %}Save{% else %}Create{% endif %}
+        </button>
+    </div>
+</form>
+{% endblock %}
