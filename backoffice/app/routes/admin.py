@@ -1,8 +1,7 @@
 import requests
-from flask import Blueprint, render_template, redirect, url_for, request
+from flask import Blueprint, render_template, redirect, url_for, request, g
 from pydantic import ValidationError
 
-from app.clients.product_client import ProductClient
 from app.exceptions.branch_exceptions import BranchNotFoundException, DuplicateBranchLabelException, BranchNotEmpty
 from app.exceptions.stock_exceptions import ProductNotFound, StockAlreadyExists, StockNotFound
 from app.exceptions.user_exceptions import EmailAlreadyExists, UserNotFound, AdminAlreadyExists
@@ -13,33 +12,39 @@ from app.services.branch_service import BranchService
 from app.services.stock import StockService
 from app.services.user import UserService
 from app.utils.helpers import catalog_or_empty, product_names
+from app.utils.auth_guard import login_required, roles_required
 
 bp = Blueprint("admin", __name__, url_prefix="/admin")
 
 
 @bp.route("/", methods=["GET"])
+@login_required
 def dashboard():
     """Backoffice landing page: entity entry cards with counts (SSR)."""
+    role = g.user["role"]
     counts = {
         "branches": len(BranchService().list()),
         "stock": len(StockService().list()),
         "users": len(UserService().list()),
     }
-    return render_template("admin/dashboard.html", counts=counts)
+    return render_template("admin/dashboard.html", counts=counts, role=role)
 
 @bp.route("/users", methods=["GET"])
+@roles_required("admin")
 def users_list():
     """List all users (SSR table)."""
     users = UserService().list()
     return render_template("admin/users/list.html", users=users)
 
 @bp.route("/users/<int:user_id>/delete", methods=["POST"])
+@roles_required("admin")
 def users_delete(user_id):
     """Soft-delete a user, then redirect back to the list."""
     UserService().delete(user_id)
     return redirect(url_for("admin.users_list"))
 
 @bp.route("/users/new", methods=["GET", "POST"])
+@roles_required("admin")
 def users_new():
     """Show the create form (GET) or create a user (POST)."""
     branches = BranchService().list()
@@ -66,6 +71,7 @@ def users_new():
 
 
 @bp.route("/users/<int:user_id>/edit", methods=["GET", "POST"])
+@roles_required("admin")
 def users_edit(user_id):
     """Show the edit form (GET) or update a user (POST)."""
     branches = BranchService().list()
@@ -98,12 +104,14 @@ def users_edit(user_id):
     return render_template("admin/users/form.html", user=user, branches=branches)
 
 @bp.route("/branches", methods=["GET"])
+@roles_required("admin")
 def branches_list():
     """List all branches (SSR table)."""
     branches = BranchService().list()
     return render_template("admin/branches/list.html", branches=branches)
 
 @bp.route("/branches/new", methods=["GET", "POST"])
+@roles_required("admin")
 def branches_new():
     """Show the create form (GET) or create a branch (POST)."""
     if request.method == "POST":
@@ -120,6 +128,7 @@ def branches_new():
 
 
 @bp.route("/branches/<int:branch_id>/edit", methods=["GET", "POST"])
+@roles_required("admin")
 def branches_edit(branch_id):
     """Show the edit form (GET) or update a branch (POST)."""
     try:
@@ -141,6 +150,7 @@ def branches_edit(branch_id):
 
 
 @bp.route("/branches/<int:branch_id>/delete", methods=["POST"])
+@roles_required("admin")
 def branches_delete(branch_id):
     """Delete a branch, unless it still has users or stock."""
     try:
@@ -153,12 +163,14 @@ def branches_delete(branch_id):
     return redirect(url_for("admin.branches_list"))
 
 @bp.route("/stock", methods=["GET"])
+@roles_required("employee")
 def stock_index():
     """Stock landing: pick a branch to view its stock."""
     branches = BranchService().list()
     return render_template("admin/stock/branches.html", branches=branches)
 
 @bp.route("/stock/<int:branch_id>", methods=["GET"])
+@roles_required("employee")
 def stock_detail(branch_id):
     """Show the stock lines of one branch, with product names."""
     try:
@@ -177,6 +189,7 @@ def stock_detail(branch_id):
     )
 
 @bp.route("/stock/<int:branch_id>/new", methods=["GET", "POST"])
+@roles_required("employee")
 def stock_new(branch_id):
     """Show the create form (GET) or create a stock line (POST)."""
     try:
@@ -214,6 +227,7 @@ def stock_new(branch_id):
 
 
 @bp.route("/stock/<int:branch_id>/<int:stock_id>/edit", methods=["GET", "POST"])
+@roles_required("employee")
 def stock_edit(branch_id, stock_id):
     """Show the edit form (GET) or update a stock line's quantity (POST)."""
     try:
@@ -239,6 +253,7 @@ def stock_edit(branch_id, stock_id):
 
 
 @bp.route("/stock/<int:branch_id>/<int:stock_id>/delete", methods=["POST"])
+@roles_required("employee")
 def stock_delete(branch_id, stock_id):
     """Hard-delete a stock line, then back to the branch detail."""
     try:
