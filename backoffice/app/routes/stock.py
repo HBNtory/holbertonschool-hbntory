@@ -83,10 +83,25 @@ def get_stock_by_branch_label_and_product_id(
     )
 
     if stock is None:
-        return {"message": "No stock found"}, 404
+        return {"message": "No product found"}, 404
 
     return jsonify({
         "branch_id": stock.branch_id,
         "product_id": stock.product_id,
         "quantity": stock.quantity,
     }), 200
+
+@bp.route("/<string:branch_label>", methods=["GET"])
+def get_stock_by_branch(branch_label: str):
+    stocks = stock_service.get_stock_by_branch_label(branch_label)
+    if not stocks:
+        return {"message": "No stock found"}, 404
+
+    return jsonify([
+        {
+            "branch_id": stock.branch_id,
+            "product_id": stock.product_id,
+            "quantity": stock.quantity,
+        }
+        for stock in stocks
+    ]), 200
