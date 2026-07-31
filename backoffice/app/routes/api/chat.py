@@ -1,10 +1,10 @@
 from flask import Blueprint, jsonify, request
 from app.clients.ai_agent import send_to_ai_agent
 
-bp = Blueprint("chat", __name__)
+bp = Blueprint("chat_api", __name__, url_prefix="/api/chat")
 
 
-@bp.route("/chat", methods=["POST"])
+@bp.route("", methods=["POST"])
 def post_chat_message():
     """route to post chat message and get answered back"""
     data = request.get_json()

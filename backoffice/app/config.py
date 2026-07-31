@@ -6,6 +6,8 @@ class Config:
     A Config class which read environment when it's load.
     No methods only attributes.
     """
+    FLASK_DEBUG = os.environ['FLASK_DEBUG']
+
     SQLALCHEMY_DATABASE_URI = (
         f"mysql+pymysql://{os.environ['MYSQL_USER']}:"
         f"{os.environ['MYSQL_PASSWORD']}"

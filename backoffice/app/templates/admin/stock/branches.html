@@ -1,0 +1,23 @@
+{% extends "base_admin.html" %}
+
+{% block title %}HBntory — Stock{% endblock %}
+
+{% block content %}
+<a href="/admin" class="inline-block mb-4 text-xs uppercase text-cyan-700 hover:underline">&larr; back to dashboard</a>
+
+<h1 class="text-2xl font-bold uppercase tracking-tight text-fuchsia-600 mb-2">Stock</h1>
+<p class="text-sm text-neutral-500 mb-6">// select a branch to view its stock</p>
+
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    {% for branch in branches %}
+    <a href="/admin/stock/{{ branch.id }}"
+       class="border-2 border-cyan-500 bg-white/90 p-5 shadow-[5px_5px_0px_#0891b2] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
+        <p class="text-xs uppercase text-cyan-600 mb-2">{{ branch.label }}</p>
+        <p class="text-4xl font-bold text-fuchsia-600 mb-4">{{ branch.stock | length }}</p>
+        <span class="text-xs uppercase text-cyan-700">view stock &rarr;</span>
+    </a>
+    {% else %}
+    <p class="text-neutral-400 text-sm">No branches yet. Create one first.</p>
+    {% endfor %}
+</div>
+{% endblock %}

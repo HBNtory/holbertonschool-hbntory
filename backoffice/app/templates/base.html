@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}HBntory{% endblock %}</title>
+    <!-- Tailwind's CDN is not for prod you need to install it in project CDN is only for dev -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .grid-bg {
+            background-color: #ede9fe;
+            background-image:
+                linear-gradient(rgba(217, 70, 239, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(34, 211, 238, 0.15) 1px, transparent 1px);
+            background-size: 28px 28px;
+        }
+    </style>
+</head>
+<body class="grid-bg min-h-screen font-mono text-fuchsia-900">
+    <header class="flex items-center justify-between px-6 py-4">
+        <a href="/" class="text-xl font-bold uppercase tracking-tight text-fuchsia-600">
+            HB<span class="text-cyan-500">ntory</span>
+        </a>
+        <a href="/login"
+           class="border-2 border-cyan-500 bg-cyan-200 px-5 py-2 text-sm font-bold uppercase text-cyan-800 shadow-[4px_4px_0px_#0891b2] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
+            Log in
+        </a>
+    </header>
+
+    <main class="px-6 py-6">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
