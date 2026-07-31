@@ -39,6 +39,15 @@ flowchart LR
 
     AI -->|MCP Protocol| MCP
 ```
+## Service Communication
+
+Services communicate using HTTP requests.
+
+- Clients communicate only with the Backoffice.
+- The Backoffice communicates with the AI Service.
+- The AI Service communicates with the MCP Server.
+- The MCP Server communicates with the Product API.
+- Database access is performed exclusively by the Backoffice through SQLAlchemy.
 
 ## Service Responsibilities
 
