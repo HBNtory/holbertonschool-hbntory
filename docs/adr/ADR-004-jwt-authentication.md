@@ -55,6 +55,14 @@ The token is signed using the application's secret key.
 * If a user is deactivated after a token has been issued, the token remains valid until expiration unless protected routes verify the user's active status on every request.
 * Secret key management becomes critical for application security.
 
+## Logout behavior
+
+The application exposes a `POST /auth/logout` endpoint.
+
+Because JWT authentication is stateless, the endpoint does not invalidate issued tokens on the server. Logging out instructs the client to remove the stored token.
+
+The security implications of this choice are described in the **Security Considerations** section.
+
 ## Alternatives Considered
 
 ### Session-based authentication
@@ -86,4 +94,6 @@ It was not selected because it tightly couples authentication with Flask, wherea
 * Authentication failures always return a generic error message to prevent user enumeration.
 * Password hashes are never included in any response.
 * The application's secret key must be stored securely using environment variables and never hardcoded in the source code.
-
+* With stateless JWT authentication, logging out consists of the client removing the token; no server-side session is maintained.
+* A JWT remains valid until its expiration time, even if the user logs out. If a token is stolen, it can still be used until it expires because no token revocation mechanism (such as a blacklist) is implemented.
+* Immediate token revocation is outside the scope of this project and may be implemented in the future if required.
