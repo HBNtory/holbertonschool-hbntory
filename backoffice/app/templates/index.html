@@ -1,11 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>HBntory</title>
-</head>
-<body>
-    <h1>HBntory</h1>
-    <p>Server-side rendered home page.</p>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}HBntory - Home{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+
+    <h1 class="text-3xl font-bold uppercase tracking-tight text-fuchsia-600 text-center mb-1">
+        Query the inventory
+    </h1>
+    <p class="text-center text-sm text-fuchsia-400 mb-8">// natural language &rarr; stock answers</p>
+
+    <form method="POST" action="/"
+          class="border-2 border-fuchsia-500 bg-white/80 p-4 shadow-[6px_6px_0px_#c026d3]">
+        <textarea name="query" rows="3" required
+                  placeholder="&gt; do we have any 27 inch monitors in Lille?"
+                  class="w-full border-2 border-fuchsia-300 bg-white p-3 text-sm text-fuchsia-900 placeholder-fuchsia-300 focus:outline-none focus:border-cyan-500"></textarea>
+        <div class="flex justify-end mt-3">
+            <button type="submit"
+                    class="border-2 border-fuchsia-600 bg-fuchsia-400 px-6 py-2 text-sm font-bold uppercase text-white shadow-[4px_4px_0px_#a21caf] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
+                Send
+            </button>
+        </div>
+    </form>
+
+    {% if error %}
+    <div class="mt-6 border-l-4 border-red-500 bg-red-50 p-4">
+        <p class="text-xs font-bold uppercase text-red-600 mb-1">error</p>
+        <p class="text-sm text-red-900">{{ error }}</p>
+    </div>
+    {% endif %}
+
+    {% if question %}
+    <div class="mt-6 border-l-4 border-cyan-500 bg-cyan-50 p-4">
+        <p class="text-xs font-bold uppercase text-cyan-600 mb-1">you asked</p>
+        <p class="text-sm text-cyan-900">{{ question }}</p>
+    </div>
+    {% endif %}
+
+    {% if answer %}
+    <div class="mt-4 border-l-4 border-fuchsia-500 bg-fuchsia-50 p-4">
+        <p class="text-xs font-bold uppercase text-fuchsia-600 mb-1">assistant</p>
+        <p class="text-sm text-fuchsia-900 whitespace-pre-line">{{ answer }}</p>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

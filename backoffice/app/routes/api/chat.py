@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from app.clients.ai_agent import send_to_ai_agent
 
-bp = Blueprint("api_chat", __name__, url_prefix="/api/chat")
+bp = Blueprint("chat_api", __name__, url_prefix="/api/chat")
 
 
 @bp.route("", methods=["POST"])

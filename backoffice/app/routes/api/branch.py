@@ -5,7 +5,7 @@ from app.exceptions.branch_exceptions import (DuplicateBranchLabelException,
 from app.schemas.branch import BranchCreate, BranchRead, BranchUpdate
 from app.services.branch_service import BranchService
 
-bp = Blueprint("api_branch", __name__, url_prefix="/api/branches")
+bp = Blueprint("branch_api", __name__, url_prefix="/api/branches")
 
 
 @bp.route("", methods=["POST"])

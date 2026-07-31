@@ -4,7 +4,7 @@ from app.exceptions.user_exceptions import EmailAlreadyExists, UserNotFound
 from app.schemas.user import UserCreate, UserRead, UserUpdate
 from app.services.user import UserService
 
-bp = Blueprint("api_user", __name__, url_prefix="/api/users")
+bp = Blueprint("user_api", __name__, url_prefix="/api/users")
 
 
 @bp.route("", methods=["POST"])

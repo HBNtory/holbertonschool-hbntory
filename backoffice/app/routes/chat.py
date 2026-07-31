@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.services.ai_agent import send_to_ai_agent
+from app.clients.ai_agent import send_to_ai_agent
 
 bp = Blueprint("chat", __name__)
 

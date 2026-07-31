@@ -9,7 +9,7 @@ from app.exceptions.stock_exceptions import (
 from app.schemas.stock import StockCreate, StockRead, StockUpdate
 from app.services.stock import StockService
 
-bp = Blueprint("api_stock", __name__, url_prefix="/api/stocks")
+bp = Blueprint("stock_api", __name__, url_prefix="/api/stocks")
 
 
 @bp.route("", methods=["POST"])
