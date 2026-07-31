@@ -1,7 +1,87 @@
 # HBNtory
 
+## Project Overview
+
+HBNtory is an internal inventory management platform composed of a Flask
+Backoffice application, a MySQL database, an AI service and an MCP server.
+
+The platform allows administrators to manage users, branches and stock data.
+It also provides AI-assisted queries through the integration of an independent
+AI service.
+
+The project is fully containerized using Docker Compose to provide a
+reproducible development environment.
+
 Internal backoffice service (Flask) for managing users, branches and stock, backed
-by a MySQL database. Everything runs through Docker Compose.
+by a MySQL database.
+
+## Team Members
+
+- Maxime
+- Guillaume
+- Rawan
+
+## Architecture Summary
+
+The system is composed of four main services:
+
+     Client
+        |
+        v
+Backoffice (Flask)
+        |
++----------------+
+|                |
+v                v
+MySQL      AI Service
+                 |
+                 v
+           MCP Server
+
+
+### Backoffice
+
+The Backoffice is the main application entry point.
+
+Responsibilities:
+
+- User management
+- Branch management
+- Stock management
+- JWT authentication
+- Communication with external services
+
+The application follows a layered architecture:
+
+    Route
+      |
+      v
+    Service
+      |
+      v
+  Repository
+      |
+      v
+  Database
+
+
+### Database
+
+MySQL stores persistent application data:
+
+- Users
+- Branches
+- Stock information
+
+### AI Service
+
+The AI service handles AI queries and communicates with the MCP server when
+additional information is required.
+
+### MCP Server
+
+The MCP server exposes tools used by the AI service.
+
 
 ## Requirements
 - Docker and Docker Compose
@@ -13,15 +93,29 @@ cp .env.example .env
 ```
 
 ## Running the services
-Start the database and the backoffice:
-```bash
-docker compose up --build db backoffice
-```
+Using:
+docker compose up --build
 
-Or start everything in the background:
+### Run individual services
+
+Backoffice:
+
 ```bash
-docker compose up -d
-```
+docker compose up --build backoffice
+
+AI Service:
+
+docker compose up --build ai_service
+
+MCP Server:
+
+docker compose up --build mcp_server
+
+Database:
+
+docker compose up db
+
+---
 
 Stop the services:
 ```bash
@@ -185,6 +279,32 @@ POST /auth/logout
 Because JWT authentication is stateless, the server does not maintain user sessions.
 
 Logging out consists of removing the JWT from the client. A previously issued token remains valid until it expires.
+
+## Main Technical Decisions
+
+### Flask Application Factory
+
+The Backoffice uses Flask's application factory pattern to avoid global state
+and simplify testing.
+
+### Layered Architecture
+
+Business logic is separated into routes, services and repositories to keep
+responsibilities isolated.
+
+### Argon2 Password Hashing
+
+Passwords are stored using Argon2 hashing to provide secure password storage.
+
+### JWT Authentication
+
+JWT was chosen for authentication because it provides a stateless mechanism
+suitable for distributed services.
+
+### AI Communication Through Backoffice
+
+AI requests are routed through the Backoffice instead of exposing the AI
+service directly to users.
 
 ## Troubleshooting
 
