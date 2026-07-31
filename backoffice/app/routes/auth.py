@@ -42,3 +42,11 @@ def login():
     response = LoginResponse(token=token)
 
     return response.model_dump(), 200
+
+
+@bp.route("/logout", methods=["POST"])
+def logout():
+    """Logout the current user."""
+    service = AuthService()
+    service.logout()
+    return "", 204
