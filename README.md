@@ -36,6 +36,29 @@ curl http://localhost:8080/health
 Expected response: `{"status": "ok", "database": "ok"}`
 Returns `503` if the database is unreachable
 
+## Development mode (Flask debug)
+
+The backoffice reads the `FLASK_DEBUG` environment variable to toggle Flask's
+debug mode. When enabled, the server auto-reloads on Python changes and Jinja
+re-reads templates on every request, so editing code or templates only requires
+a browser refresh — no container restart.
+
+Enable it by setting the variable in your `.env`:
+```dotenv
+FLASK_DEBUG=1
+```
+
+Then restart the backoffice once to load the change:
+```bash
+docker compose restart backoffice
+```
+
+Disable it by setting `FLASK_DEBUG=0` (the default in `.env.example`) or removing
+the variable entirely.
+
+> **Warning:** never enable debug mode in production. Flask's debugger exposes an
+> interactive console that allows arbitrary code execution on the server.
+
 ## Database (MySQL)
 Connect as root:
 ```bash
