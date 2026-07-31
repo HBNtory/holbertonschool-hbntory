@@ -11,7 +11,7 @@ from app.schemas.auth import (
     LoginRequest,
     LoginResponse,
 )
-from app.services.auth import AuthService
+from app.services.auth_service import AuthService
 
 
 bp = Blueprint(
