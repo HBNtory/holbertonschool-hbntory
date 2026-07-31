@@ -31,6 +31,7 @@ def create_app():
     from app.routes.api.branch import bp as api_branch_bp
     from app.routes.api.stock import bp as api_stock_bp
     from app.routes.api.chat import bp as api_chat_bp
+    from app.routes.auth import bp as auth_bp
 
     app.register_blueprint(health_bp)
     app.register_blueprint(user_bp)
@@ -44,6 +45,7 @@ def create_app():
     app.register_blueprint(api_branch_bp)
     app.register_blueprint(api_stock_bp)
     app.register_blueprint(api_chat_bp)
+    app.register_blueprint(auth_bp)
 
     @app.teardown_appcontext
     def remove_session(exception=None):

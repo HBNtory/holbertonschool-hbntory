@@ -148,6 +148,67 @@ ollama serve
 ## Environment variables
 See `.env.example` for the full list.
 
+### Generate a JWT secret key
+
+Generate a secure secret key using Python:
+
+```bash
+python3 -c "import secrets; print(secrets.token_hex(32))"
+```
+
+Copy the generated value into your `.env` file:
+
+```env
+JWT_SECRET_KEY=<your_generated_secret_key>
+```
+
+## Authentication
+
+The backoffice uses JWT (JSON Web Token) authentication.
+
+### Login
+
+Authenticate using:
+
+```http
+POST /auth/login
+```
+
+Request body:
+
+```json
+{
+  "email": "user@example.com",
+  "password": "your_password"
+}
+```
+
+A successful authentication returns a JWT token:
+
+```json
+{
+  "token": "<jwt_token>"
+}
+```
+
+Use this token in the `Authorization` header when accessing protected endpoints:
+
+```http
+Authorization: Bearer <jwt_token>
+```
+
+### Logout
+
+Logout is available through:
+
+```http
+POST /auth/logout
+```
+
+Because JWT authentication is stateless, the server does not maintain user sessions.
+
+Logging out consists of removing the JWT from the client. A previously issued token remains valid until it expires.
+
 ## Troubleshooting
 
 ### Orphan containers warning
