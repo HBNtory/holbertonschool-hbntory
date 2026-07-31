@@ -2,9 +2,15 @@ import requests
 from flask import Blueprint, render_template, redirect, url_for, request, g
 from pydantic import ValidationError
 
-from app.exceptions.branch_exceptions import BranchNotFoundException, DuplicateBranchLabelException, BranchNotEmpty
-from app.exceptions.stock_exceptions import ProductNotFound, StockAlreadyExists, StockNotFound
-from app.exceptions.user_exceptions import EmailAlreadyExists, UserNotFound, AdminAlreadyExists
+from app.exceptions.branch_exceptions import (BranchNotFoundException,
+                                              DuplicateBranchLabelException,
+                                              BranchNotEmpty)
+from app.exceptions.stock_exceptions import (ProductNotFound,
+                                             StockAlreadyExists,
+                                             StockNotFound)
+from app.exceptions.user_exceptions import (EmailAlreadyExists,
+                                            UserNotFound,
+                                            AdminAlreadyExists)
 from app.schemas.branch import BranchUpdate, BranchCreate
 from app.schemas.stock import StockCreate, StockUpdate
 from app.schemas.user import UserCreate, UserUpdate
@@ -29,6 +35,7 @@ def dashboard():
     }
     return render_template("admin/dashboard.html", counts=counts, role=role)
 
+
 @bp.route("/users", methods=["GET"])
 @roles_required("admin")
 def users_list():
@@ -36,12 +43,14 @@ def users_list():
     users = UserService().list()
     return render_template("admin/users/list.html", users=users)
 
+
 @bp.route("/users/<int:user_id>/delete", methods=["POST"])
 @roles_required("admin")
 def users_delete(user_id):
     """Soft-delete a user, then redirect back to the list."""
     UserService().delete(user_id)
     return redirect(url_for("admin.users_list"))
+
 
 @bp.route("/users/new", methods=["GET", "POST"])
 @roles_required("admin")
@@ -60,14 +69,16 @@ def users_new():
                 branch_id=request.form.get("branch_id", type=int),
             )
             UserService().create(data)
-        except (ValidationError, EmailAlreadyExists, AdminAlreadyExists) as exc:
+        except (ValidationError, EmailAlreadyExists,
+                AdminAlreadyExists) as exc:
             return render_template(
                 "admin/users/form.html",
                 user=None, branches=branches, error=str(exc),
             )
         return redirect(url_for("admin.users_list"))
 
-    return render_template("admin/users/form.html", user=None, branches=branches)
+    return render_template("admin/users/form.html",
+                           user=None, branches=branches)
 
 
 @bp.route("/users/<int:user_id>/edit", methods=["GET", "POST"])
@@ -94,14 +105,17 @@ def users_edit(user_id):
 
         try:
             UserService().update(user_id, UserUpdate(**fields))
-        except (ValidationError, EmailAlreadyExists, AdminAlreadyExists) as exc:
+        except (ValidationError, EmailAlreadyExists,
+                AdminAlreadyExists) as exc:
             return render_template(
                 "admin/users/form.html",
                 user=user, branches=branches, error=str(exc),
             )
         return redirect(url_for("admin.users_list"))
 
-    return render_template("admin/users/form.html", user=user, branches=branches)
+    return render_template("admin/users/form.html",
+                           user=user, branches=branches)
+
 
 @bp.route("/branches", methods=["GET"])
 @roles_required("admin")
@@ -109,6 +123,7 @@ def branches_list():
     """List all branches (SSR table)."""
     branches = BranchService().list()
     return render_template("admin/branches/list.html", branches=branches)
+
 
 @bp.route("/branches/new", methods=["GET", "POST"])
 @roles_required("admin")
@@ -162,12 +177,14 @@ def branches_delete(branch_id):
         return redirect(url_for("admin.branches_list"))
     return redirect(url_for("admin.branches_list"))
 
+
 @bp.route("/stock", methods=["GET"])
 @roles_required("employee")
 def stock_index():
     """Stock landing: pick a branch to view its stock."""
     branches = BranchService().list()
     return render_template("admin/stock/branches.html", branches=branches)
+
 
 @bp.route("/stock/<int:branch_id>", methods=["GET"])
 @roles_required("employee")
@@ -187,6 +204,7 @@ def stock_detail(branch_id):
         stocks=stocks,
         names=names,
     )
+
 
 @bp.route("/stock/<int:branch_id>/new", methods=["GET", "POST"])
 @roles_required("employee")
@@ -226,7 +244,9 @@ def stock_new(branch_id):
     )
 
 
-@bp.route("/stock/<int:branch_id>/<int:stock_id>/edit", methods=["GET", "POST"])
+@bp.route("/stock/<int:branch_id>/<int:stock_id>/edit",
+          methods=["GET", "POST"]
+          )
 @roles_required("employee")
 def stock_edit(branch_id, stock_id):
     """Show the edit form (GET) or update a stock line's quantity (POST)."""

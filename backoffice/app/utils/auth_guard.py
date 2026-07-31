@@ -1,4 +1,5 @@
-"""Auth guards for SSR routes: read the JWT cookie, protect pages by login/role."""
+"""Auth guards for SSR routes: read the JWT cookie,
+ protect pages by login/role."""
 from functools import wraps
 
 import jwt
@@ -9,7 +10,8 @@ ACCESS_COOKIE = "access_token"
 
 
 def _current_user_payload() -> dict | None:
-    """Return the decoded JWT payload from the cookie, or None if absent/invalid."""
+    """Return the decoded JWT payload from the cookie,
+     or None if absent/invalid."""
     token = request.cookies.get(ACCESS_COOKIE)
     if not token:
         return None
@@ -29,6 +31,7 @@ def login_required(view):
         g.user = payload          # {"user_id": ..., "role": ..., ...}
         return view(*args, **kwargs)
     return wrapped
+
 
 def roles_required(*allowed_roles):
     """Require login AND one of the given roles; else redirect."""

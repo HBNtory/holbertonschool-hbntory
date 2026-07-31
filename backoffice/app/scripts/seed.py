@@ -73,6 +73,8 @@ def seed_stocks(stock_service: StockService, branches: list) -> None:
                 skipped += 1
 
     print(f"Stocks seeded: {created} created, {skipped} skipped.")
+
+
 def seed() -> None:
     branch_service = BranchService()
     user_service = UserService()
@@ -81,6 +83,7 @@ def seed() -> None:
     branches = seed_branches(branch_service)
     seed_admin(user_service, branches[0].id)
     seed_stocks(stock_service, branches)
+
 
 if __name__ == "__main__":
     app = create_app()

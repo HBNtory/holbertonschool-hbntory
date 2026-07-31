@@ -50,6 +50,7 @@ def login():
 
     return render_template("auth/login.html")
 
+
 @bp.route("/logout", methods=["POST"])
 def logout():
     """Clear the auth cookie and redirect to the public home."""

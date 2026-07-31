@@ -15,6 +15,7 @@ def product_names() -> dict[int, str] | None:
         return None
     return {product["id"]: product["name"] for product in catalog}
 
+
 def catalog_or_empty() -> list[dict]:
     """Return the product catalog, or an empty list if the API is down."""
     try:

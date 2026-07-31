@@ -14,4 +14,5 @@ class DuplicateBranchLabelException(BranchException):
 
 
 class BranchNotEmpty(BranchException):
-    """Raised when deleting a branch that still has users or stock."""
+    """Raised when deleting a branch that still
+     has users or stock."""
