@@ -7,17 +7,11 @@
 
 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
 
+    {% if role == "admin" %}
     <a href="/admin/branches"
        class="border-2 border-cyan-500 bg-white/90 p-5 shadow-[5px_5px_0px_#0891b2] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
         <p class="text-xs uppercase text-cyan-600 mb-2">Branches</p>
         <p class="text-4xl font-bold text-fuchsia-600 mb-4">{{ counts.branches }}</p>
-        <span class="text-xs uppercase text-cyan-700">manage &rarr;</span>
-    </a>
-
-    <a href="/admin/stock"
-       class="border-2 border-cyan-500 bg-white/90 p-5 shadow-[5px_5px_0px_#0891b2] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
-        <p class="text-xs uppercase text-cyan-600 mb-2">Stock lines</p>
-        <p class="text-4xl font-bold text-fuchsia-600 mb-4">{{ counts.stock }}</p>
         <span class="text-xs uppercase text-cyan-700">manage &rarr;</span>
     </a>
 
@@ -27,6 +21,16 @@
         <p class="text-4xl font-bold text-fuchsia-600 mb-4">{{ counts.users }}</p>
         <span class="text-xs uppercase text-cyan-700">manage &rarr;</span>
     </a>
+    {% endif %}
+
+    {% if role == "employee" %}
+    <a href="/admin/stock"
+       class="border-2 border-cyan-500 bg-white/90 p-5 shadow-[5px_5px_0px_#0891b2] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
+        <p class="text-xs uppercase text-cyan-600 mb-2">Stock lines</p>
+        <p class="text-4xl font-bold text-fuchsia-600 mb-4">{{ counts.stock }}</p>
+        <span class="text-xs uppercase text-cyan-700">manage &rarr;</span>
+    </a>
+    {% endif %}
 
 </div>
 {% endblock %}

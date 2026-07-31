@@ -32,7 +32,8 @@ def index():
                 result = send_to_ai_agent(question)
                 answer = _extract_answer(result)
             except requests.RequestException:
-                error = "The assistant is unavailable right now. Please try again."
+                error = ("The assistant is unavailable right now."
+                         " Please try again.")
 
     return render_template(
         "index.html",

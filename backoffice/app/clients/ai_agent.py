@@ -9,7 +9,7 @@ def send_to_ai_agent(query: str) -> dict:
     response = requests.post(
         f"{AGENT_URL}/query",
         json={"query": query},
-        timeout = 30
+        timeout=30
     )
     response.raise_for_status()
     return response.json()

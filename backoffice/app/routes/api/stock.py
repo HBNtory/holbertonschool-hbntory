@@ -91,6 +91,7 @@ def get_stock_by_branch_label_and_product_id(
         "quantity": stock.quantity,
     }), 200
 
+
 @bp.route("/<string:branch_label>", methods=["GET"])
 def get_stock_by_branch(branch_label: str):
     stocks = stock_service.get_stock_by_branch_label(branch_label)
