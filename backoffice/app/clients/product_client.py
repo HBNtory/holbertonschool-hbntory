@@ -23,3 +23,10 @@ class ProductClient:
             return False
         response.raise_for_status()
         return False
+
+    def list(self) -> list[dict]:
+        url = f"{self.base_url}/api/v1/products"
+        response = requests.get(url, timeout=5)
+        response.raise_for_status()
+
+        return response.json()["catalog"]
