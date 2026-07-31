@@ -46,6 +46,10 @@ class StockService:
         )
         return self.repository.create(stock)
 
+    def list(self, branch_id: int | None = None) -> list[Stock]:
+        """Return all stock rows, optionally filtered by branch."""
+        return self.repository.list(branch_id)
+
     def get(self, stock_id: int) -> Stock:
         """Return a stock row by id.
 
@@ -84,5 +88,5 @@ class StockService:
             product_id=product_id,
         )
 
-    def get_stock_by_branch_label(self, branch_label: str) -> list[Stock]:
+    def get_stock_by_branch_label(self, branch_label: str):
         return self.repository.get_stock_by_branch_label(branch_label)

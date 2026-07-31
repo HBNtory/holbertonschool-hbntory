@@ -1,0 +1,68 @@
+{% extends "base_admin.html" %}
+
+{% block title %}HBntory — Users{% endblock %}
+
+{% block content %}
+<a href="/admin" class="inline-block mb-4 text-xs uppercase text-cyan-700 hover:underline">&larr; back to dashboard</a>
+
+<div class="flex items-center justify-between mb-5">
+    <div>
+        <p class="text-xs uppercase text-neutral-400 mb-1">dashboard / users</p>
+        <h1 class="text-2xl font-bold uppercase tracking-tight text-fuchsia-600">Users</h1>
+    </div>
+    <a href="/admin/users/new"
+       class="border-2 border-fuchsia-600 bg-fuchsia-400 px-4 py-2 text-xs font-bold uppercase text-white shadow-[4px_4px_0px_#a21caf] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all">
+        + New user
+    </a>
+</div>
+
+<div class="border-2 border-fuchsia-500 bg-white/90 shadow-[6px_6px_0px_#c026d3] overflow-x-auto">
+    <table class="w-full text-sm">
+        <thead class="bg-fuchsia-100 text-fuchsia-700 uppercase text-xs">
+            <tr>
+                <th class="text-left px-4 py-2.5">Name</th>
+                <th class="text-left px-4 py-2.5">Email</th>
+                <th class="text-left px-4 py-2.5">Role</th>
+                <th class="text-left px-4 py-2.5">Branch</th>
+                <th class="text-left px-4 py-2.5">Status</th>
+                <th class="px-4 py-2.5"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr class="border-t border-fuchsia-100 hover:bg-fuchsia-50">
+                <td class="px-4 py-2.5">{{ user.first_name }} {{ user.last_name }}</td>
+                <td class="px-4 py-2.5 text-fuchsia-500">{{ user.email }}</td>
+                <td class="px-4 py-2.5">
+                    {% if user.role.value == "admin" %}
+                    <span class="bg-fuchsia-200 text-fuchsia-800 px-2 py-0.5 text-xs uppercase">admin</span>
+                    {% else %}
+                    <span class="bg-cyan-200 text-cyan-800 px-2 py-0.5 text-xs uppercase">employee</span>
+                    {% endif %}
+                </td>
+                <td class="px-4 py-2.5">{{ user.branch.label }}</td>
+                <td class="px-4 py-2.5">
+                    {% if user.active %}
+                    <span class="text-cyan-600 uppercase text-xs">active</span>
+                    {% else %}
+                    <span class="text-neutral-400 uppercase text-xs line-through">inactive</span>
+                    {% endif %}
+                </td>
+                <td class="px-4 py-2.5 text-right whitespace-nowrap">
+                    <a href="/admin/users/{{ user.id }}/edit" class="text-cyan-600 hover:underline">edit</a>
+                    &nbsp;
+                    <form method="POST" action="/admin/users/{{ user.id }}/delete" class="inline"
+                          onsubmit="return confirm('Deactivate this user?');">
+                        <button type="submit" class="text-red-500 hover:underline">del</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" class="px-4 py-6 text-center text-neutral-400 text-sm">No users yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

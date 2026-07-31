@@ -6,7 +6,7 @@ The service depends on a repository injected from outside.
 
 from app.exceptions.branch_exceptions import (
     BranchNotFoundException,
-    DuplicateBranchLabelException,
+    DuplicateBranchLabelException, BranchNotEmpty,
 )
 from app.models.branch import Branch
 from app.repositories.branch_repository import BranchRepository
@@ -65,4 +65,6 @@ class BranchService:
     def delete(self, branch_id) -> None:
         """Delete a branch by id."""
         branch = self.get(branch_id)
+        if branch.users or branch.stock:
+            raise BranchNotEmpty(branch_id)
         self.repository.delete(branch)

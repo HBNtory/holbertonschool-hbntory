@@ -1,14 +1,14 @@
 ###
 # Get Users list
-GET http://localhost:8080/users
+GET http://localhost:8080/api/users
 
 ###
 # Get User by id
-GET http://localhost:8080/users/1
+GET http://localhost:8080/api/users/1
 
 ###
 # Create a new user with role
-POST http://localhost:8080/users
+POST http://localhost:8080/api/users
 Content-Type: application/json
 
 {
@@ -22,7 +22,7 @@ Content-Type: application/json
 
 ###
 # Create a new user without role
-POST http://localhost:8080/users
+POST http://localhost:8080/api/users
 Content-Type: application/json
 
 {
@@ -35,7 +35,7 @@ Content-Type: application/json
 
 ###
 # Update user with id
-PATCH http://localhost:8080/users/3
+PATCH http://localhost:8080/api/users/3
 Content-Type: application/json
 
 {
@@ -45,4 +45,4 @@ Content-Type: application/json
 
 ###
 # Soft Delete user with id
-DELETE http://localhost:8080/users/3
+DELETE http://localhost:8080/api/users/3
